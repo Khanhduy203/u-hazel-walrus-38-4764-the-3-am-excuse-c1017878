@@ -10,7 +10,10 @@ const ENTRY =
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
-if (ENTRY.length < 1 || ENTRY.length > 200 || ENTRY.includes("\n") || ENTRY.trim().length === 0) {
-  throw new Error("entry must be one line of 1-200 characters");
+const parts = ENTRY.split("\n");
+const hasContent = ENTRY.trim().length > 0;
+const fitsLimit = ENTRY.length >= 1 && ENTRY.length <= 200;
+if (parts.length !== 1 || !hasContent || !fitsLimit) {
+  throw new Error("excuse line rejected: needs exactly one non-empty line up to 200 chars");
 }
 writeFileSync(join(outDir, "entry.txt"), ENTRY + "\n", "utf8");
